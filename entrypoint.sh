@@ -10,7 +10,7 @@ then
     #groupmod -g $FLEXGET_GROUP_ID -o flexget
 
     # remove user flexget from group flexget
-    delgroup flexget flexget
+    deluser flexget
     delgroup flexget
 
     # add group with new ID
