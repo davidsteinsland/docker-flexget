@@ -11,21 +11,12 @@ then
 
     # remove user flexget from group flexget
     deluser flexget
-    delgroup flexget
 
     # add group with new ID
     addgroup -S -g $FLEXGET_GROUP_ID flexget
     # re-add user flexget to group
-    adduser -S -G flexget flexget
-  fi
-
-  if [ ! -z "${FLEXGET_USER_ID}" ];
-  then
     echo "Changing UID to $FLEXGET_USER_ID"
-    #usermod -u $FLEXGET_USER_ID -o flexget
-
-    deluser flexget
-    adduser -S -u $FLEXGET_USER_ID -G flexget flexget
+    adduser -S -G flexget -u $FLEXGET_USER_ID flexget
   fi
 
   chown -R flexget:flexget /home/flexget
