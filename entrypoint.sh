@@ -16,7 +16,7 @@ then
     # add group with new ID
     addgroup -S -g $FLEXGET_GROUP_ID flexget
     # re-add user flexget to group
-    addgroup flexget flexget
+    adduser -S -G flexget flexget
   fi
 
   if [ ! -z "${FLEXGET_USER_ID}" ];
