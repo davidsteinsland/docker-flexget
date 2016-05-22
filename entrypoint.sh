@@ -9,8 +9,14 @@ then
     echo "Changing GID to $FLEXGET_GROUP_ID"
     #groupmod -g $FLEXGET_GROUP_ID -o flexget
 
+    # remove user flexget from group flexget
+    delgroup flexget flexget
     delgroup flexget
+
+    # add group with new ID
     addgroup -S -g $FLEXGET_GROUP_ID flexget
+    # re-add user flexget to group
+    addgroup flexget flexget
   fi
 
   if [ ! -z "${FLEXGET_USER_ID}" ];
