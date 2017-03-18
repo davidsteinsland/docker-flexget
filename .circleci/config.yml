@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/docker-flexget
+    steps:
+      - checkout
+      - setup_docker_engine
+      - run:
+          name: Build Image
+          command: docker build -t davidsteinsland/flexget:latest .
+      - run:
+          name: Push Image
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push davidsteinsland/flexget
