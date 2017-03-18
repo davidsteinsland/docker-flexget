@@ -5,29 +5,16 @@ schedules:
 web_server:
   bind: 0.0.0.0
   port: ${FLEXGET_WEB_PORT}
-api: yes
-webui: yes
+  web_ui: yes
+
 tasks:
   sort-series:
-    # Input plugin: search /data/downloads for TV series
+    metainfo_series: yes
+    accept_all: yes
     filesystem:
       path: /data/downloads/
       regexp: '.*\.(avi|mkv|mp4)$'
       recursive: yes
-    seen: local
-    # Ignore samples
-    regexp:
-      reject:
-        - sample
-    # configure "series" plugin by parsing only, meaning that it creates
-    # metadata information about the shows, so that "require_field" plugin will work nicely
-    all_series:
-      parse_only: yes
-    require_field: series_name
-    # accept all tv shows, meaning that we don't have to create a list of valid shows,
-    # we will simply accept everything
-    accept_all: yes
-    # move series and organize them nicely
     move:
       to: "/data/media/{{series_name}}/Season {{series_season|pad(2)}}"
-      filename: "{{ series_name }} - {{series_id}}{{location | pathext}}"
+      rename: "{{ series_name }} - {{series_id}}{{location | pathext}}"
