@@ -1,15 +1,15 @@
-FROM alpine:3.3
+FROM alpine:3.9
 
 RUN addgroup -S flexget && adduser -S -G flexget flexget
 
-ENV GOSU_VERSION 1.7
+ENV GOSU_VERSION 1.11
 RUN set -x \
     && apk add --no-cache --virtual .gosu-deps \
         dpkg \
         gnupg \
         openssl \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture | awk -F- '{ print $NF }').asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
@@ -28,10 +28,10 @@ RUN apk add --update ca-certificates gettext && rm -rf /var/cache/apk/*
 
 RUN pip install -I flexget
 
-ENV "FLEXGET_USER_ID=" \
-  "FLEXGET_GROUP_ID=" \
-  "FLEXGET_WEB_PASSWORD=" \
-  "FLEXGET_WEB_PORT="
+ENV FLEXGET_USER_ID=
+ENV FLEXGET_GROUP_ID=
+ENV FLEXGET_WEB_PASSWORD=
+ENV FLEXGET_WEB_PORT=
 
 COPY entrypoint.sh /
 COPY flexget-daemon.sh /
